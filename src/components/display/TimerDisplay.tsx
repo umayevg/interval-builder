@@ -66,7 +66,7 @@ export default function TimerDisplay({
 				<Progress
 					value={(elapsedTime / calculateTotalTime()) * 100}
 					className='h-2 bg-gray-700'
-					indicatorClassName='bg-blue-500'
+					// indicatorClassName='bg-blue-500'
 				/>
 			</div>
 			<div className='mt-4'>
@@ -74,7 +74,7 @@ export default function TimerDisplay({
 				<Progress
 					value={(elapsedTime / totalWorkTime) * 100}
 					className='h-2 bg-gray-700'
-					indicatorClassName='bg-green-500'
+					// indicatorClassName='bg-green-500'
 				/>
 			</div>
 		</div>
