@@ -414,7 +414,7 @@ export default function SportTimer() {
 												{formatTime(
 													calculateTotalTime(
 														sets[setIndex].exercises,
-														sets[setIndex].totalRounds,
+														// sets[setIndex].totalRounds,
 														sets[setIndex].skipLastRest
 													)
 												)}
