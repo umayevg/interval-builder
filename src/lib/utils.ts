@@ -15,7 +15,7 @@ import { twMerge } from 'tailwind-merge'
 
 export const calculateTotalTime = (
 	exercises: Exercise[],
-	// totalRounds: number,
+	totalRounds: number,
 	skipLastRest: boolean
 ): number => {
 	return exercises.reduce((total, exercise, index) => {
@@ -25,10 +25,10 @@ export const calculateTotalTime = (
 
 		if (isLastExercise && skipLastRest) {
 			const lastRoundRestTime = exercise.restTime
-			return total + totalExerciseTime - lastRoundRestTime
+			return (total + totalExerciseTime) * totalRounds - lastRoundRestTime
 		}
 
-		return total + totalExerciseTime
+		return (total + totalExerciseTime) * totalRounds
 	}, 0)
 }
 
