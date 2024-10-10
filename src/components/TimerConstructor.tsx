@@ -48,7 +48,7 @@ export default function SportTimer() {
 		rounds: 1,
 	})
 	const [isReady, setIsReady] = useState(false)
-	const [readyCountdown, setReadyCountdown] = useState(5)
+	const [readyCountdown, setReadyCountdown] = useState(500)
 
 	const shortBeepRef = useRef<HTMLAudioElement | null>(null)
 	const secondsShortBeepRef = useRef<HTMLAudioElement | null>(null)
@@ -73,6 +73,8 @@ export default function SportTimer() {
 		sets[activeSet].totalRounds,
 		sets[activeSet].skipLastRest
 	)
+
+	const isPaddingNeeded = isRunning || isReady
 
 	useEffect(() => {
 		localStorage.setItem('sets', JSON.stringify(sets))
@@ -122,12 +124,18 @@ export default function SportTimer() {
 		}
 	}
 
+	console.log('sets', sets[activeSet])
+
 	const removeExercise = (index: number) => {
 		setSets(prevSets => {
 			const newSets = [...prevSets]
+			const exercises = newSets[activeSet].exercises.filter(
+				(_, i) => i !== index
+			)
 			newSets[activeSet] = {
 				...newSets[activeSet],
-				exercises: newSets[activeSet].exercises.filter((_, i) => i !== index),
+				totalRounds: exercises.length < 2 ? 1 : newSets[activeSet].totalRounds,
+				exercises: exercises,
 			}
 			return newSets
 		})
@@ -201,7 +209,7 @@ export default function SportTimer() {
 					Interval Builder
 				</CardTitle>
 			</CardHeader>
-			<CardContent className='p-6'>
+			<CardContent className={!isPaddingNeeded ? 'p-6' : 'p-0'}>
 				<Tabs
 					value={`set-${activeSet}`}
 					onValueChange={value => setActiveSet(Number(value.split('-')[1]))}
@@ -431,7 +439,7 @@ export default function SportTimer() {
 				{(isRunning || isReady) && (
 					<div
 						className={`text-center p-6 rounded-lg transition-colors duration-300 ${getBackgroundColor()} 
-            min-h-[300px] flex flex-col justify-center`}
+            min-h-[400px] flex flex-col justify-center`}
 					>
 						{isReady ? (
 							<>
@@ -440,24 +448,7 @@ export default function SportTimer() {
 							</>
 						) : (
 							<>
-								{/* <h2 className='text-2xl font-bold mb-4'>
-									{isResting ? 'Rest' : 'Work'}
-								</h2>
-								<p className='text-6xl font-bold mb-4'>
-									{formatTime(currentTime)}
-								</p>
-								<p className='text-xl mb-2'>
-									Exercise: {sets[activeSet].exercises[currentExercise]?.name}
-								</p>
-								<p className='text-xl mb-2'>
-									Exercise Round: {currentExerciseRound}/
-									{sets[activeSet].exercises[currentExercise]?.rounds}
-								</p>
-								<p className='text-xl mb-4'>
-									Total Round: {currentRound}/{sets[activeSet].totalRounds}
-								</p> */}
-
-								<h2 className='text-3xl font-bold'>
+								<h2 className='text-3xl font-bold mb-4'>
 									{isResting
 										? 'Rest'
 										: sets[activeSet].exercises[currentExercise]?.name}
