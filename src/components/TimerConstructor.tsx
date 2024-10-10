@@ -11,7 +11,7 @@ import {
 	Play,
 	Pause,
 	StopCircle,
-	RotateCcw,
+	// RotateCcw,
 } from 'lucide-react'
 import { Button } from './ui/button/Button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card/Card'

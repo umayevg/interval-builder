@@ -49,7 +49,7 @@ export function useTimer(
 	const isLastTotalRound = currentRound === totalRounds
 
 	useEffect(() => {
-		let interval: NodeJS.Timeout
+		let interval: number
 
 		if (isRunning && !isPaused) {
 			interval = setInterval(() => {
