@@ -18,20 +18,18 @@ export const calculateTotalTime = (
 	totalRounds: number,
 	skipLastRest: boolean
 ): number => {
-	return (
-		exercises.reduce((total, exercise, index) => {
-			const isLastExercise = index === exercises.length - 1
-			const totalExerciseTime =
-				(exercise.workTime + exercise.restTime) * exercise.rounds
+	return exercises.reduce((total, exercise, index) => {
+		const isLastExercise = index === exercises.length - 1
+		const totalExerciseTime =
+			(exercise.workTime + exercise.restTime) * exercise.rounds
 
-			if (isLastExercise && skipLastRest) {
-				const lastRoundRestTime = exercise.restTime
-				return total + totalExerciseTime - lastRoundRestTime
-			}
+		if (isLastExercise && skipLastRest) {
+			const lastRoundRestTime = exercise.restTime
+			return total + totalExerciseTime - lastRoundRestTime
+		}
 
-			return total + totalExerciseTime
-		}, 0) * totalRounds
-	)
+		return total + totalExerciseTime
+	}, 0)
 }
 
 export const calculateTotalWorkTime = (

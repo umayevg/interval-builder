@@ -48,7 +48,7 @@ export default function SportTimer() {
 		rounds: 1,
 	})
 	const [isReady, setIsReady] = useState(false)
-	const [readyCountdown, setReadyCountdown] = useState(500)
+	const [readyCountdown, setReadyCountdown] = useState(5)
 
 	const shortBeepRef = useRef<HTMLAudioElement | null>(null)
 	const secondsShortBeepRef = useRef<HTMLAudioElement | null>(null)
@@ -123,8 +123,6 @@ export default function SportTimer() {
 			})
 		}
 	}
-
-	console.log('sets', sets[activeSet])
 
 	const removeExercise = (index: number) => {
 		setSets(prevSets => {
@@ -203,9 +201,9 @@ export default function SportTimer() {
 	}
 
 	return (
-		<Card className='w-full max-w-3xl mx-auto bg-gray-900 text-white min-h-[600px]'>
+		<Card className='w-full max-w-3xl mx-auto bg-gray-900 text-white'>
 			<CardHeader className='border-b border-gray-800'>
-				<CardTitle className='text-3xl font-bold text-center text-white'>
+				<CardTitle className='text-3xl font-bold text-center text-white opacity-50 '>
 					Interval Builder
 				</CardTitle>
 			</CardHeader>
@@ -213,12 +211,13 @@ export default function SportTimer() {
 				<Tabs
 					value={`set-${activeSet}`}
 					onValueChange={value => setActiveSet(Number(value.split('-')[1]))}
+					className={isPaddingNeeded ? 'mt-[-8px]' : 'mt-0'}
 				>
 					{!isRunning && !isReady && (
-						<TabsList className='grid w-full grid-cols-3 mb-4'>
-							<TabsTrigger value='set-0'>Set 1</TabsTrigger>
-							<TabsTrigger value='set-1'>Set 2</TabsTrigger>
-							<TabsTrigger value='set-2'>Set 3</TabsTrigger>
+						<TabsList className='grid w-full grid-cols-3 mb-4 bg-gray-700'>
+							<TabsTrigger value='set-0'>Preset 1</TabsTrigger>
+							<TabsTrigger value='set-1'>Preset 2</TabsTrigger>
+							<TabsTrigger value='set-2'>Preset 3</TabsTrigger>
 						</TabsList>
 					)}
 					{[0, 1, 2].map(setIndex => (
@@ -248,8 +247,10 @@ export default function SportTimer() {
 																</div>
 																<div className='flex justify-between items-end text-sm text-gray-400'>
 																	<div>
-																		<p>Work: {exercise.workTime}s</p>
-																		<p>Rest: {exercise.restTime}s</p>
+																		<pre>
+																			<p>Work: {exercise.workTime}s</p>
+																			<p>Rest: {exercise.restTime}s</p>
+																		</pre>
 																	</div>
 
 																	<Button
@@ -292,14 +293,14 @@ export default function SportTimer() {
 															updateNewExercise('name', e.target.value)
 														}
 														placeholder='e.g., Push-ups'
-														className='bg-gray-800 border-gray-700 text-white placeholder-gray-500'
+														className='bg-gray-800 border-gray-700 text-white placeholder-gray-500 mt-1'
 													/>
 												</div>
 												<div>
 													<Label htmlFor='rounds' className='text-gray-300'>
 														Rounds
 													</Label>
-													<div className='flex items-center'>
+													<div className='flex items-center mt-1'>
 														<Button
 															disabled={newExercise.rounds <= 1}
 															onClick={() => decrementValue('rounds')}
@@ -307,7 +308,7 @@ export default function SportTimer() {
 														>
 															<ChevronDown className='h-4 w-4' />
 														</Button>
-														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-16 text-center rounded-md justify-center'>
+														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-[50px] text-center rounded-md justify-center'>
 															<span>{newExercise.rounds}</span>
 														</span>
 														<Button
@@ -324,7 +325,7 @@ export default function SportTimer() {
 													<Label htmlFor='workTime' className='text-gray-300'>
 														Work Time
 													</Label>
-													<div className='flex items-center'>
+													<div className='flex items-center mt-1'>
 														<Button
 															disabled={newExercise.workTime <= 10}
 															onClick={() => decrementValue('workTime', 5, 10)}
@@ -333,7 +334,7 @@ export default function SportTimer() {
 															<ChevronDown className='h-4 w-4' />
 														</Button>
 														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-full text-center rounded-md justify-center'>
-															<span>{newExercise.workTime}</span>
+															<span>{formatTime(newExercise.workTime)}</span>
 														</span>
 														<Button
 															onClick={() => incrementValue('workTime', 5)}
@@ -347,7 +348,7 @@ export default function SportTimer() {
 													<Label htmlFor='restTime' className='text-gray-300'>
 														Rest Time
 													</Label>
-													<div className='flex items-center'>
+													<div className='flex items-center mt-1'>
 														<Button
 															disabled={newExercise.restTime < 1}
 															onClick={() => decrementValue('restTime', 5, 0)}
@@ -356,7 +357,7 @@ export default function SportTimer() {
 															<ChevronDown className='h-4 w-4' />
 														</Button>
 														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-full text-center rounded-md justify-center'>
-															<span>{newExercise.restTime}</span>
+															<span>{formatTime(newExercise.restTime)}</span>
 														</span>
 														<Button
 															onClick={() => incrementValue('restTime', 5)}
@@ -435,41 +436,46 @@ export default function SportTimer() {
 						</TabsContent>
 					))}
 				</Tabs>
-
 				{(isRunning || isReady) && (
 					<div
-						className={`text-center p-6 rounded-lg transition-colors duration-300 ${getBackgroundColor()} 
-            min-h-[400px] flex flex-col justify-center`}
+						className={` text-center p-8 rounded- transition-colors duration-300 ${getBackgroundColor()} 
+            min-h-[400px] flex flex-col  ${
+							isReady ? 'justify-center' : 'justify-between'
+						}`}
 					>
 						{isReady ? (
 							<>
-								<h2 className='text-3xl font-bold mb-4'>Get Ready!</h2>
+								<h2 className='text-4xl font-bold mb-4 mt-0 pt-0'>
+									Get Ready!
+								</h2>
 								<p className='text-8xl font-bold mb-4'>{readyCountdown}</p>
 							</>
 						) : (
 							<>
-								<h2 className='text-3xl font-bold mb-4'>
-									{isResting
-										? 'Rest'
-										: sets[activeSet].exercises[currentExercise]?.name}
-								</h2>
-								<p className='text-xl mb-4'>
-									{currentExerciseRound}/
-									{sets[activeSet].exercises[currentExercise]?.rounds}
-								</p>
+								<div>
+									<h2 className='text-3xl font-medium mb-4'>
+										{isResting
+											? 'Rest'
+											: sets[activeSet].exercises[currentExercise]?.name}
+									</h2>
+									<p className='text-xl mb-4'>
+										{currentExerciseRound} of{' '}
+										{sets[activeSet].exercises[currentExercise]?.rounds}
+									</p>
+								</div>
 								<p className='text-8xl font-bold mb-4'>
 									{formatTime(currentTime)}
 								</p>
 
 								<p className='text-xl mt-8'>
-									Set: {currentRound}/{sets[activeSet].totalRounds}
+									Set: {currentRound} of {sets[activeSet].totalRounds}
 								</p>
 							</>
 						)}
 					</div>
 				)}
 				{/* Controls */}
-				<div className='flex flex-wrap justify-center gap-2 mt-6'>
+				<div className='flex flex-wrap justify-center gap-2 mt-6 mb-6'>
 					{sets[activeSet].exercises.length > 0 && (
 						<>
 							{!isRunning && !isReady && (
