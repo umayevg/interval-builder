@@ -18,21 +18,20 @@ export const calculateTotalTime = (
 	totalRounds: number,
 	skipLastRest: boolean
 ): number => {
-	// Calculate the total time for one round of all exercises
-	const totalTimeForOneRound = exercises.reduce((total, exercise) => {
-		return total + (exercise.workTime + exercise.restTime) * exercise.rounds
-	}, 0)
+	return (
+		exercises.reduce((total, exercise, index) => {
+			const isLastExercise = index === exercises.length - 1
+			const totalExerciseTime =
+				(exercise.workTime + exercise.restTime) * exercise.rounds
 
-	// Total time for all rounds
-	let totalTime = totalTimeForOneRound * totalRounds
+			if (isLastExercise && skipLastRest) {
+				const lastRoundRestTime = exercise.restTime
+				return total + totalExerciseTime - lastRoundRestTime
+			}
 
-	// If skipping the last rest, subtract the rest time of the last exercise (only once)
-	if (skipLastRest) {
-		const lastExercise = exercises[exercises.length - 1]
-		totalTime -= lastExercise.restTime // Only subtract rest time once
-	}
-
-	return totalTime
+			return total + totalExerciseTime
+		}, 0) * totalRounds
+	)
 }
 
 export const calculateTotalWorkTime = (
