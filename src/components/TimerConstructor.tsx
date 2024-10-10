@@ -277,6 +277,7 @@ export default function SportTimer() {
 														Exercise Name
 													</Label>
 													<Input
+														style={{ fontSize: '16px' }}
 														id='exerciseName'
 														value={newExercise.name}
 														onChange={e =>
