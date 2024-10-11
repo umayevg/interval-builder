@@ -35,10 +35,6 @@ export function useTimer(
 		setIsResting(false)
 	}, [exercises])
 
-	// const resetTimer = useCallback(() => {
-	// 	stopTimer()
-	// }, [stopTimer])
-
 	const toggleSound = useCallback(() => {
 		setIsSoundEnabled(prev => !prev)
 	}, [])
@@ -49,7 +45,7 @@ export function useTimer(
 	const isLastTotalRound = currentRound === totalRounds
 
 	useEffect(() => {
-		let interval: number
+		let interval: NodeJS.Timeout
 
 		if (isRunning && !isPaused) {
 			interval = setInterval(() => {
@@ -69,7 +65,7 @@ export function useTimer(
 							isLastTotalRound
 						) {
 							stopTimer()
-							return 1
+							return 0
 						}
 
 						setIsResting(false)
@@ -88,11 +84,21 @@ export function useTimer(
 									return exercises[0].workTime
 								} else {
 									stopTimer()
-									return 1
+									return 0
 								}
 							}
 						}
 					} else {
+						// Check if it's the last exercise and we should skip the rest
+						if (
+							skipLastRest &&
+							isLastExercise &&
+							isLastExerciseRound &&
+							isLastTotalRound
+						) {
+							stopTimer()
+							return 0
+						}
 						setIsResting(true)
 						return currentEx.restTime
 					}
@@ -130,7 +136,6 @@ export function useTimer(
 		startTimer,
 		pauseTimer,
 		stopTimer,
-		// resetTimer,
 		toggleSound,
 	}
 }

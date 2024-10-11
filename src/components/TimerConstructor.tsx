@@ -11,7 +11,7 @@ import {
 	Play,
 	Pause,
 	StopCircle,
-	// RotateCcw,
+	RotateCcw,
 } from 'lucide-react'
 import { Button } from './ui/button/Button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card/Card'
@@ -74,6 +74,30 @@ export default function SportTimer() {
 		sets[activeSet].skipLastRest
 	)
 
+	const currentSet = sets[activeSet]
+	const currentExerciseData = currentSet.exercises[currentExercise]
+
+	const isLastExerciseRound =
+		currentExerciseRound === currentExerciseData?.rounds
+	const isLastExercise = currentExercise === currentSet.exercises.length - 1
+	const isLastSetRound = currentRound === currentSet.totalRounds
+
+	const getNextExercise = (): Exercise | null => {
+		if (!isLastExerciseRound) {
+			// Next round of the same exercise
+			return currentExerciseData
+		} else if (!isLastExercise) {
+			// Next exercise in the same set
+			return currentSet.exercises[currentExercise + 1]
+		} else if (!isLastSetRound) {
+			// First exercise of the next set round
+			return currentSet.exercises[0]
+		}
+		return null // No next exercise
+	}
+
+	const nextExercise = getNextExercise()
+
 	const isPaddingNeeded = isRunning || isReady
 
 	useEffect(() => {
@@ -81,7 +105,7 @@ export default function SportTimer() {
 	}, [sets])
 
 	useEffect(() => {
-		let interval: number
+		let interval: NodeJS.Timeout | null = null
 		if (isReady && readyCountdown > 0) {
 			interval = setInterval(() => {
 				setReadyCountdown(prev => prev - 1)
@@ -90,7 +114,9 @@ export default function SportTimer() {
 			setIsReady(false)
 			startTimer()
 		}
-		return () => clearInterval(interval)
+		return () => {
+			if (interval) clearInterval(interval)
+		}
 	}, [isReady, readyCountdown, startTimer])
 
 	useEffect(() => {
@@ -122,6 +148,19 @@ export default function SportTimer() {
 				rounds: 1,
 			})
 		}
+	}
+
+	const resetPreset = () => {
+		setSets(prevSets => {
+			const newSets = [...prevSets]
+			newSets[activeSet] = {
+				exercises: [],
+				totalRounds: 1,
+				skipLastRest: false,
+			}
+			return newSets
+		})
+		localStorage.setItem('sets', JSON.stringify(sets))
 	}
 
 	const removeExercise = (index: number) => {
@@ -438,7 +477,7 @@ export default function SportTimer() {
 				</Tabs>
 				{(isRunning || isReady) && (
 					<div
-						className={` text-center p-8 rounded- transition-colors duration-300 ${getBackgroundColor()} 
+						className={` text-center p-8 rounded- transition-colors duration-300 ${getBackgroundColor()}
             min-h-[400px] flex flex-col  ${
 							isReady ? 'justify-center' : 'justify-between'
 						}`}
@@ -452,7 +491,7 @@ export default function SportTimer() {
 							</>
 						) : (
 							<>
-								<div>
+								{/* <div>
 									<h2 className='text-3xl font-medium mb-4'>
 										{isResting
 											? 'Rest'
@@ -465,11 +504,41 @@ export default function SportTimer() {
 								</div>
 								<p className='text-8xl font-bold mb-4'>
 									{formatTime(currentTime)}
+								</p> */}
+
+								{/* new added */}
+
+								<div>
+									<h2 className='text-3xl font-medium mb-4 opacity-80'>
+										{isResting ? 'Rest' : currentExerciseData?.name}
+									</h2>
+									<p className='text-xl mb-4 opacity-80'>
+										{currentExerciseRound} of {currentExerciseData?.rounds}
+									</p>
+								</div>
+								<p className='text-8xl font-bold mb-4'>
+									{formatTime(currentTime)}
 								</p>
 
-								<p className='text-xl mt-8'>
-									Set: {currentRound} of {sets[activeSet].totalRounds}
+								{/* Display next exercise information */}
+								{nextExercise && (
+									<p className='opacity-50 text-2xl'>
+										{nextExercise.name}
+										{nextExercise === currentExerciseData
+											? ' (Next Round)'
+											: ''}
+									</p>
+								)}
+
+								<p className='text-xl mt-8 opacity-80'>
+									Set {currentRound} of {currentSet.totalRounds}
 								</p>
+
+								{/* new added */}
+
+								{/* <p className='text-xl mt-8'>
+									Set: {currentRound} of {sets[activeSet].totalRounds}
+								</p> */}
 							</>
 						)}
 					</div>
@@ -479,13 +548,24 @@ export default function SportTimer() {
 					{sets[activeSet].exercises.length > 0 && (
 						<>
 							{!isRunning && !isReady && (
-								<Button
-									onClick={handleStart}
-									disabled={isRunning || sets[activeSet].exercises.length === 0}
-									className='bg-green-600 hover:bg-green-700'
-								>
-									<Play className='mr-2 h-4 w-4' /> Start
-								</Button>
+								<>
+									<Button
+										onClick={handleStart}
+										disabled={
+											isRunning || sets[activeSet].exercises.length === 0
+										}
+										className='bg-green-600 hover:bg-green-700'
+									>
+										<Play className='mr-2 h-4 w-4' /> Start
+									</Button>
+									<Button
+										onClick={resetPreset}
+										className=' bg-red-600 hover:bg-red-700'
+									>
+										<RotateCcw className='mr-2 h-4 w-4' />
+										Reset
+									</Button>
+								</>
 							)}
 							{isRunning && (
 								<>
@@ -510,13 +590,6 @@ export default function SportTimer() {
 									</Button>
 								</>
 							)}
-
-							{/* <Button
-								onClick={resetTimer}
-								className='bg-gray-600 hover:bg-gray-700'
-							>
-								<RotateCcw className='mr-2 h-4 w-4' /> Reset
-							</Button> */}
 						</>
 					)}
 					<Button
