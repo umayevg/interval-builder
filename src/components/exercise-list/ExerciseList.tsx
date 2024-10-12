@@ -51,13 +51,16 @@ export default function ExerciseList({
 							<div className='flex justify-between text-sm text-gray-600 '>
 								<div className='flex justify-between items-center'>
 									<span>
-										W: {exercise.workTime} | R: {exercise.restTime}
+										W: {formatTime(exercise.workTime)} | R:{' '}
+										{formatTime(exercise.restTime)}
 									</span>
 								</div>
 								<div>
 									<Timer className='w-4 h-4 mr-1 inline-block mb-1' />
 									<span>
-										{formatTime(exercise.workTime + exercise.restTime)}
+										{formatTime(
+											(exercise.workTime + exercise.restTime) * exercise.rounds
+										)}
 									</span>
 								</div>
 							</div>
