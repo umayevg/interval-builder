@@ -1,82 +1,63 @@
-import { Label } from '../ui/label/Label'
-import { Progress } from '../ui/progress/Progress'
 import { Exercise } from '../../types/types'
+import { formatTime } from '../../lib/utils'
 
 interface TimerDisplayProps {
-	currentTime: number
+	isReady: boolean
+	readyCountdown: number
 	isResting: boolean
-	exercises: Exercise[]
-	currentExercise: number
+	currentExercise: Exercise | undefined
+	currentExerciseRound: number
 	currentRound: number
 	totalRounds: number
-	elapsedTime: number
-	totalWorkTime: number
-	calculateTotalTime: () => number
+	currentTime: number
 }
 
 export default function TimerDisplay({
-	currentTime,
+	isReady,
+	readyCountdown,
 	isResting,
-	exercises,
 	currentExercise,
+	currentExerciseRound,
 	currentRound,
 	totalRounds,
-	elapsedTime,
-	totalWorkTime,
-	calculateTotalTime,
+	currentTime,
 }: TimerDisplayProps) {
-	const formatTime = (time: number) => {
-		const minutes = Math.floor(time / 60)
-		const seconds = time % 60
-		return `${minutes.toString().padStart(2, '0')}:${seconds
-			.toString()
-			.padStart(2, '0')}`
+	const getBackgroundColor = () => {
+		if (isReady) return 'bg-white text-black'
+		if (isResting) return 'bg-blue-600'
+		return 'bg-green-600'
 	}
 
 	return (
 		<div
-			className={`text-center p-6 rounded-lg transition-colors duration-500 ${
-				isResting ? 'bg-blue-900' : 'bg-red-900'
+			className={`text-center p-8 rounded-lg transition-colors duration-300 ${getBackgroundColor()} 
+      min-h-[400px] flex flex-col ${
+				isReady ? 'justify-center' : 'justify-between'
 			}`}
 		>
-			<h4 className='text-2xl font-bold mb-2'>{isResting ? 'Rest' : 'Work'}</h4>
-			<p className='text-5xl font-bold mb-4 text-blue-400'>
-				{formatTime(currentTime)}
-			</p>
-			<p className='text-lg mb-2'>
-				Exercise:{' '}
-				<span className='font-semibold text-green-400'>
-					{exercises[currentExercise]?.name}
-				</span>{' '}
-				({currentExercise + 1}/{exercises.length})
-			</p>
-			<p className='text-lg mb-4'>
-				Round:{' '}
-				<span className='font-semibold text-yellow-400'>
-					{currentRound}/{totalRounds}
-				</span>
-			</p>
-			{!isResting && exercises[currentExercise + 1] && (
-				<p className='text-sm text-gray-400'>
-					Next: {exercises[currentExercise + 1].name}
-				</p>
+			{isReady ? (
+				<>
+					{/* <h2 className='text-4xl font-bold mb-4 mt-0 pt-0'>Get Ready!</h2> */}
+					<p className='text-8xl font-bold mb-4'>
+						{readyCountdown === 1 ? 'GO!' : readyCountdown}
+					</p>
+				</>
+			) : (
+				<>
+					<div>
+						<h2 className='text-3xl font-medium mb-2 opacity-80'>
+							{isResting ? 'Rest' : currentExercise?.name}
+						</h2>
+						<p className='text-md mb-4 opacity-60'>
+							({currentExerciseRound}/{currentExercise?.rounds})
+						</p>
+					</div>
+					<p className='text-8xl font-bold mb-4'>{formatTime(currentTime)}</p>
+					<p className='text-xl mt-8 opacity-80'>
+						Set {currentRound} of {totalRounds}
+					</p>
+				</>
 			)}
-			<div className='mt-4'>
-				<Label className='text-gray-300 mb-2 block'>Total Progress</Label>
-				<Progress
-					value={(elapsedTime / calculateTotalTime()) * 100}
-					className='h-2 bg-gray-700'
-					// indicatorClassName='bg-blue-500'
-				/>
-			</div>
-			<div className='mt-4'>
-				<Label className='text-gray-300 mb-2 block'>Work Time Progress</Label>
-				<Progress
-					value={(elapsedTime / totalWorkTime) * 100}
-					className='h-2 bg-gray-700'
-					// indicatorClassName='bg-green-500'
-				/>
-			</div>
 		</div>
 	)
 }

@@ -1,35 +1,17 @@
-'use client'
-
 import { useState, useEffect, useRef } from 'react'
-import {
-	Volume2,
-	VolumeX,
-	Plus,
-	Trash2,
-	ChevronUp,
-	ChevronDown,
-	Play,
-	Pause,
-	StopCircle,
-	RotateCcw,
-} from 'lucide-react'
-import { Button } from './ui/button/Button'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card/Card'
-import { Input } from './ui/input/Input'
-import { Label } from './ui/label/Label'
-import { Switch } from './ui/switch/Switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs/Tabs'
-import { Exercise } from '../types/types'
+import ExerciseList from './exercise-list/ExerciseList'
+import ExerciseForm from './exercise-form/ExerciseForm'
+import TotalTime from './totaltime/TotalTime'
+import SkipLastRestToggle from './skiplastrest/SkipLastRestToggle'
+import TimerDisplay from './display/TimerDisplay'
+import Controls from './controls/TimerControls'
+import { Exercise, Set } from '../types/types'
 import { useTimer } from '../hooks/useTimer'
-import { calculateTotalTime, formatTime } from '../lib/utils'
+import TotalRounds from './totalrounds/TotalRounds'
 
-type Set = {
-	exercises: Exercise[]
-	totalRounds: number
-	skipLastRest: boolean
-}
-
-export default function SportTimer() {
+export default function TimerConstructor() {
 	const [sets, setSets] = useState<Set[]>(() => {
 		const savedSets = localStorage.getItem('sets')
 		return savedSets
@@ -41,18 +23,17 @@ export default function SportTimer() {
 			  ]
 	})
 	const [activeSet, setActiveSet] = useState(0)
-	const [newExercise, setNewExercise] = useState<Exercise>({
-		name: '',
-		workTime: 30,
-		restTime: 10,
-		rounds: 1,
-	})
 	const [isReady, setIsReady] = useState(false)
 	const [readyCountdown, setReadyCountdown] = useState(5)
 
-	const shortBeepRef = useRef<HTMLAudioElement | null>(null)
-	const secondsShortBeepRef = useRef<HTMLAudioElement | null>(null)
+	const shortBeepRef1 = useRef<HTMLAudioElement | null>(null)
+	const shortBeepRef2 = useRef<HTMLAudioElement | null>(null)
+	const shortBeepRef3 = useRef<HTMLAudioElement | null>(null)
+	const shortBeepRef4 = useRef<HTMLAudioElement | null>(null)
+
 	const longBeepRef = useRef<HTMLAudioElement | null>(null)
+
+	const [audioInitialized, setAudioInitialized] = useState(false)
 
 	const {
 		isRunning,
@@ -66,39 +47,12 @@ export default function SportTimer() {
 		startTimer,
 		pauseTimer,
 		stopTimer,
-		// resetTimer,
 		toggleSound,
 	} = useTimer(
 		sets[activeSet].exercises,
 		sets[activeSet].totalRounds,
 		sets[activeSet].skipLastRest
 	)
-
-	const currentSet = sets[activeSet]
-	const currentExerciseData = currentSet.exercises[currentExercise]
-
-	const isLastExerciseRound =
-		currentExerciseRound === currentExerciseData?.rounds
-	const isLastExercise = currentExercise === currentSet.exercises.length - 1
-	const isLastSetRound = currentRound === currentSet.totalRounds
-
-	const getNextExercise = (): Exercise | null => {
-		if (!isLastExerciseRound) {
-			// Next round of the same exercise
-			return currentExerciseData
-		} else if (!isLastExercise) {
-			// Next exercise in the same set
-			return currentSet.exercises[currentExercise + 1]
-		} else if (!isLastSetRound) {
-			// First exercise of the next set round
-			return currentSet.exercises[0]
-		}
-		return null // No next exercise
-	}
-
-	const nextExercise = getNextExercise()
-
-	const isPaddingNeeded = isRunning || isReady
 
 	useEffect(() => {
 		localStorage.setItem('sets', JSON.stringify(sets))
@@ -119,48 +73,15 @@ export default function SportTimer() {
 		}
 	}, [isReady, readyCountdown, startTimer])
 
-	useEffect(() => {
-		if (isSoundEnabled && isRunning && !isPaused) {
-			if (currentTime === 3) {
-				shortBeepRef.current?.play()
-			} else if (currentTime === 2) {
-				secondsShortBeepRef.current?.play()
-			} else if (currentTime === 1) {
-				longBeepRef.current?.play()
-			}
-		}
-	}, [currentTime, isSoundEnabled, isRunning, isPaused])
-
-	const addExercise = () => {
-		if (newExercise.name) {
-			setSets(prevSets => {
-				const newSets = [...prevSets]
-				newSets[activeSet] = {
-					...newSets[activeSet],
-					exercises: [...newSets[activeSet].exercises, newExercise],
-				}
-				return newSets
-			})
-			setNewExercise({
-				name: '',
-				workTime: 30,
-				restTime: 10,
-				rounds: 1,
-			})
-		}
-	}
-
-	const resetPreset = () => {
+	const addExercise = (exercise: Exercise) => {
 		setSets(prevSets => {
 			const newSets = [...prevSets]
 			newSets[activeSet] = {
-				exercises: [],
-				totalRounds: 1,
-				skipLastRest: false,
+				...newSets[activeSet],
+				exercises: [...newSets[activeSet].exercises, exercise],
 			}
 			return newSets
 		})
-		localStorage.setItem('sets', JSON.stringify(sets))
 	}
 
 	const removeExercise = (index: number) => {
@@ -176,45 +97,6 @@ export default function SportTimer() {
 			}
 			return newSets
 		})
-	}
-
-	const updateNewExercise = (field: keyof Exercise, value: string | number) => {
-		setNewExercise({ ...newExercise, [field]: value })
-	}
-
-	const incrementValue = (field: keyof Exercise, step: number = 1) => {
-		setNewExercise(prev => ({
-			...prev,
-			[field]:
-				typeof prev[field] === 'number'
-					? (prev[field] as number) + step
-					: prev[field],
-		}))
-	}
-
-	const decrementValue = (
-		field: keyof Exercise,
-		step: number = 1,
-		min: number = 1
-	) => {
-		setNewExercise(prev => ({
-			...prev,
-			[field]:
-				typeof prev[field] === 'number'
-					? Math.max((prev[field] as number) - step, min)
-					: prev[field],
-		}))
-	}
-
-	const handleStart = () => {
-		setIsReady(true)
-		setReadyCountdown(5)
-	}
-
-	const getBackgroundColor = () => {
-		if (isReady) return 'bg-blue-600'
-		if (isResting) return 'bg-red-600'
-		return 'bg-green-600'
 	}
 
 	const updateTotalRounds = (value: number) => {
@@ -239,18 +121,71 @@ export default function SportTimer() {
 		})
 	}
 
+	const resetPreset = () => {
+		setSets(prevSets => {
+			const newSets = [...prevSets]
+			newSets[activeSet] = {
+				exercises: [],
+				totalRounds: 1,
+				skipLastRest: false,
+			}
+			return newSets
+		})
+	}
+
+	useEffect(() => {
+		if (isSoundEnabled && isRunning && !isPaused && audioInitialized) {
+			if (currentTime === 5) {
+				shortBeepRef4.current
+					?.play()
+					.catch(error => console.error('Error playing short beep:', error))
+			} else if (currentTime === 4) {
+				shortBeepRef3.current
+					?.play()
+					.catch(error => console.error('Error playing short beep:', error))
+			} else if (currentTime === 3) {
+				shortBeepRef2.current
+					?.play()
+					.catch(error => console.error('Error playing short beep:', error))
+			} else if (currentTime === 2) {
+				shortBeepRef1.current
+					?.play()
+					.catch(error => console.error('Error playing short beep:', error))
+			} else if (currentTime === 1) {
+				longBeepRef.current
+					?.play()
+					.catch(error => console.error('Error playing long beep:', error))
+			}
+		}
+	}, [currentTime, isSoundEnabled, isRunning, isPaused, audioInitialized])
+
+	const initializeAudio = () => {
+		setAudioInitialized(true)
+		// shortBeepRef.current?.load()
+		shortBeepRef1.current?.load()
+		shortBeepRef2.current?.load()
+		shortBeepRef3.current?.load()
+		shortBeepRef4.current?.load()
+		longBeepRef.current?.load()
+	}
+
+	const handleStart = () => {
+		initializeAudio()
+		setIsReady(true)
+		setReadyCountdown(5)
+	}
+
 	return (
 		<Card className='w-full max-w-3xl mx-auto bg-gray-900 text-white'>
 			<CardHeader className='border-b border-gray-800'>
-				<CardTitle className='text-3xl font-bold text-center text-white opacity-50 '>
+				<CardTitle className='text-2xl font-bold text-gray-300'>
 					Interval Builder
 				</CardTitle>
 			</CardHeader>
-			<CardContent className={!isPaddingNeeded ? 'p-6' : 'p-0'}>
+			<CardContent className='p-6'>
 				<Tabs
 					value={`set-${activeSet}`}
 					onValueChange={value => setActiveSet(Number(value.split('-')[1]))}
-					className={isPaddingNeeded ? 'mt-[-8px]' : 'mt-0'}
 				>
 					{!isRunning && !isReady && (
 						<TabsList className='grid w-full grid-cols-3 mb-4 bg-gray-700'>
@@ -261,357 +196,86 @@ export default function SportTimer() {
 					)}
 					{[0, 1, 2].map(setIndex => (
 						<TabsContent key={setIndex} value={`set-${setIndex}`}>
-							<div className='space-y-6'>
-								{!isRunning && !isReady && (
-									<>
-										{sets[setIndex].exercises.length > 0 && (
-											<div className='space-y-4'>
-												<h3 className='text-lg font-semibold mb-2 text-gray-300'>
-													Exercises
-												</h3>
-												<div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
-													{sets[setIndex].exercises.map((exercise, index) => (
-														<Card
-															key={index}
-															className='bg-gray-800 border-gray-700'
-														>
-															<CardContent className='p-4'>
-																<div className='flex justify-between items-center mb-2'>
-																	<h4 className='font-medium text-lg text-white'>
-																		{exercise.name}
-																	</h4>
-																	<span className='text-sm text-gray-400'>
-																		x{exercise.rounds}
-																	</span>
-																</div>
-																<div className='flex justify-between items-end text-sm text-gray-400'>
-																	<div>
-																		<pre>
-																			<p>Work: {exercise.workTime}s</p>
-																			<p>Rest: {exercise.restTime}s</p>
-																		</pre>
-																	</div>
-
-																	<Button
-																		variant='destructive'
-																		className='p-0 w-8 h-8'
-																		size='sm'
-																		onClick={() => removeExercise(index)}
-																	>
-																		<Trash2 className='h-4 w-4' />
-																	</Button>
-																</div>
-																{/* <Button
-																	variant='destructive'
-																	size='sm'
-																	onClick={() => removeExercise(index)}
-																	className='mt-2 w-full'
-																>
-																	<Trash2 className='h-4 w-4 mr-2' /> Remove
-																</Button> */}
-															</CardContent>
-														</Card>
-													))}
-												</div>
-											</div>
-										)}
-										<div className='space-y-4'>
-											<div className='flex flex- sm:flex-row gap-4'>
-												<div className='flex-1'>
-													<Label
-														htmlFor='exerciseName'
-														className='text-gray-300'
-													>
-														Exercise Name
-													</Label>
-													<Input
-														style={{ fontSize: '16px' }}
-														id='exerciseName'
-														value={newExercise.name}
-														onChange={e =>
-															updateNewExercise('name', e.target.value)
-														}
-														placeholder='e.g., Push-ups'
-														className='bg-gray-800 border-gray-700 text-white placeholder-gray-500 mt-1'
-													/>
-												</div>
-												<div>
-													<Label htmlFor='rounds' className='text-gray-300'>
-														Rounds
-													</Label>
-													<div className='flex items-center mt-1'>
-														<Button
-															disabled={newExercise.rounds <= 1}
-															onClick={() => decrementValue('rounds')}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronDown className='h-4 w-4' />
-														</Button>
-														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-[50px] text-center rounded-md justify-center'>
-															<span>{newExercise.rounds}</span>
-														</span>
-														<Button
-															onClick={() => incrementValue('rounds')}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronUp className='h-4 w-4' />
-														</Button>
-													</div>
-												</div>
-											</div>
-											<div className='flex flex- sm:flex-row gap-4'>
-												<div className='flex-1'>
-													<Label htmlFor='workTime' className='text-gray-300'>
-														Work Time
-													</Label>
-													<div className='flex items-center mt-1'>
-														<Button
-															disabled={newExercise.workTime <= 10}
-															onClick={() => decrementValue('workTime', 5, 10)}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronDown className='h-4 w-4' />
-														</Button>
-														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-full text-center rounded-md justify-center'>
-															<span>{formatTime(newExercise.workTime)}</span>
-														</span>
-														<Button
-															onClick={() => incrementValue('workTime', 5)}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronUp className='h-4 w-4' />
-														</Button>
-													</div>
-												</div>
-												<div className='flex-1'>
-													<Label htmlFor='restTime' className='text-gray-300'>
-														Rest Time
-													</Label>
-													<div className='flex items-center mt-1'>
-														<Button
-															disabled={newExercise.restTime < 1}
-															onClick={() => decrementValue('restTime', 5, 0)}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronDown className='h-4 w-4' />
-														</Button>
-														<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 w-full text-center rounded-md justify-center'>
-															<span>{formatTime(newExercise.restTime)}</span>
-														</span>
-														<Button
-															onClick={() => incrementValue('restTime', 5)}
-															className='bg-gray-700 hover:bg-gray-600'
-														>
-															<ChevronUp className='h-4 w-4' />
-														</Button>
-													</div>
-												</div>
-											</div>
-										</div>
-										<Button
-											onClick={addExercise}
-											disabled={newExercise.name.length === 0}
-											className='w-full bg-blue-600 hover:bg-blue-700'
-										>
-											<Plus className='mr-2 h-4 w-4' /> Add Exercise
-										</Button>
-
-										{sets[setIndex].exercises.length > 1 && (
-											<div>
-												<Label htmlFor='totalRounds' className='text-gray-300'>
-													Total Rounds:
-												</Label>
-												<div className='flex items-center space-x-2'>
-													<Button
-														disabled={sets[setIndex].totalRounds === 1}
-														onClick={() =>
-															updateTotalRounds(sets[setIndex].totalRounds - 1)
-														}
-														className='bg-gray-700 hover:bg-gray-600'
-													>
-														<ChevronDown className='h-4 w-4' />
-													</Button>
-													<span className='flex bg-gray-800 h-[40px] items-center border-gray-700 text-white mx-2 min-w-10 text-center rounded-md justify-center'>
-														<span>{sets[setIndex].totalRounds}</span>
-													</span>
-													<Button
-														onClick={() =>
-															updateTotalRounds(sets[setIndex].totalRounds + 1)
-														}
-														className='bg-gray-700 hover:bg-gray-600'
-													>
-														<ChevronUp className='h-4 w-4' />
-													</Button>
-												</div>
-											</div>
-										)}
-										<div>
-											<h3 className='text-lg font-semibold text-gray-300'>
-												Total Time
-											</h3>
-											<p className='text-2xl font-bold text-blue-400'>
-												{formatTime(
-													calculateTotalTime(
-														sets[setIndex].exercises,
-														sets[setIndex].totalRounds,
-														sets[setIndex].skipLastRest
-													)
-												)}
-											</p>
-										</div>
-										<div className='flex items-center space-x-2'>
-											<Switch
-												id='skip-last-rest'
-												checked={sets[setIndex].skipLastRest}
-												onCheckedChange={toggleSkipLastRest}
-											/>
-											<Label htmlFor='skip-last-rest' className='text-gray-300'>
-												Skip last rest
-											</Label>
-										</div>
-									</>
-								)}
-							</div>
+							{!isRunning && !isReady && (
+								<>
+									<ExerciseList
+										exercises={sets[setIndex].exercises}
+										onRemove={removeExercise}
+									/>
+									<ExerciseForm
+										onAdd={addExercise}
+										title={
+											sets[setIndex].exercises.length > 0
+												? 'Add more exercises'
+												: 'Add'
+										}
+									/>
+									{sets[setIndex].exercises.length > 1 && (
+										<TotalRounds
+											totalRounds={sets[setIndex].totalRounds}
+											onUpdate={updateTotalRounds}
+										/>
+									)}
+									<div className='flex justify-between'>
+										<TotalTime
+											exercises={sets[setIndex].exercises}
+											totalRounds={sets[setIndex].totalRounds}
+											skipLastRest={sets[setIndex].skipLastRest}
+										/>
+										<SkipLastRestToggle
+											checked={sets[setIndex].skipLastRest}
+											onToggle={toggleSkipLastRest}
+										/>
+									</div>
+								</>
+							)}
 						</TabsContent>
 					))}
 				</Tabs>
 				{(isRunning || isReady) && (
-					<div
-						className={` text-center p-8 rounded- transition-colors duration-300 ${getBackgroundColor()}
-            min-h-[400px] flex flex-col  ${
-							isReady ? 'justify-center' : 'justify-between'
-						}`}
-					>
-						{isReady ? (
-							<>
-								<h2 className='text-4xl font-bold mb-4 mt-0 pt-0'>
-									Get Ready!
-								</h2>
-								<p className='text-8xl font-bold mb-4'>{readyCountdown}</p>
-							</>
-						) : (
-							<>
-								{/* <div>
-									<h2 className='text-3xl font-medium mb-4'>
-										{isResting
-											? 'Rest'
-											: sets[activeSet].exercises[currentExercise]?.name}
-									</h2>
-									<p className='text-xl mb-4'>
-										{currentExerciseRound} of{' '}
-										{sets[activeSet].exercises[currentExercise]?.rounds}
-									</p>
-								</div>
-								<p className='text-8xl font-bold mb-4'>
-									{formatTime(currentTime)}
-								</p> */}
-
-								{/* new added */}
-
-								<div>
-									<h2 className='text-3xl font-medium mb-4 opacity-80'>
-										{isResting ? 'Rest' : currentExerciseData?.name}
-									</h2>
-									<p className='text-xl mb-4 opacity-80'>
-										{currentExerciseRound} of {currentExerciseData?.rounds}
-									</p>
-								</div>
-								<p className='text-8xl font-bold mb-4'>
-									{formatTime(currentTime)}
-								</p>
-
-								{/* Display next exercise information */}
-								{nextExercise && (
-									<p className='opacity-50 text-2xl'>
-										{nextExercise.name}
-										{nextExercise === currentExerciseData
-											? ' (Next Round)'
-											: ''}
-									</p>
-								)}
-
-								<p className='text-xl mt-8 opacity-80'>
-									Set {currentRound} of {currentSet.totalRounds}
-								</p>
-
-								{/* new added */}
-
-								{/* <p className='text-xl mt-8'>
-									Set: {currentRound} of {sets[activeSet].totalRounds}
-								</p> */}
-							</>
-						)}
-					</div>
+					<TimerDisplay
+						isReady={isReady}
+						readyCountdown={readyCountdown}
+						isResting={isResting}
+						currentExercise={sets[activeSet].exercises[currentExercise]}
+						currentExerciseRound={currentExerciseRound}
+						currentRound={currentRound}
+						totalRounds={sets[activeSet].totalRounds}
+						currentTime={currentTime}
+					/>
 				)}
-				{/* Controls */}
-				<div className='flex flex-wrap justify-center gap-2 mt-6 mb-6'>
-					{sets[activeSet].exercises.length > 0 && (
-						<>
-							{!isRunning && !isReady && (
-								<>
-									<Button
-										onClick={handleStart}
-										disabled={
-											isRunning || sets[activeSet].exercises.length === 0
-										}
-										className='bg-green-600 hover:bg-green-700'
-									>
-										<Play className='mr-2 h-4 w-4' /> Start
-									</Button>
-									<Button
-										onClick={resetPreset}
-										className=' bg-red-600 hover:bg-red-700'
-									>
-										<RotateCcw className='mr-2 h-4 w-4' />
-										Reset
-									</Button>
-								</>
-							)}
-							{isRunning && (
-								<>
-									<Button
-										onClick={pauseTimer}
-										disabled={!isRunning}
-										className='bg-yellow-600 hover:bg-yellow-700'
-									>
-										{isPaused ? (
-											<Play className='mr-2 h-4 w-4' />
-										) : (
-											<Pause className='mr-2 h-4 w-4' />
-										)}
-										{isPaused ? 'Resume' : 'Pause'}
-									</Button>
-									<Button
-										onClick={stopTimer}
-										disabled={!isRunning && !isPaused}
-										className='bg-red-600 hover:bg-red-700'
-									>
-										<StopCircle className='mr-2 h-4 w-4' /> Stop
-									</Button>
-								</>
-							)}
-						</>
-					)}
-					<Button
-						onClick={toggleSound}
-						className='bg-purple-600 hover:bg-purple-700'
-					>
-						{isSoundEnabled ? (
-							<Volume2 className='h-4 w-4' />
-						) : (
-							<VolumeX className='h-4 w-4' />
-						)}
-					</Button>
-				</div>
-				{/* End Controls */}
-				<audio ref={shortBeepRef} preload='auto'>
+				<Controls
+					exercises={sets[activeSet].exercises}
+					isRunning={isRunning}
+					isPaused={isPaused}
+					isReady={isReady}
+					isSoundEnabled={isSoundEnabled}
+					onStart={handleStart}
+					onPause={pauseTimer}
+					onStop={stopTimer}
+					onReset={resetPreset}
+					onToggleSound={toggleSound}
+					onAudioInit={initializeAudio}
+				/>
+				<audio ref={shortBeepRef1} preload='auto'>
 					<source src='/sounds/short-beep.mp3' type='audio/mpeg' />
+					<source src='/sounds/short-beep.ogg' type='audio/ogg' />
 				</audio>
-				<audio ref={secondsShortBeepRef} preload='auto'>
+				<audio ref={shortBeepRef2} preload='auto'>
 					<source src='/sounds/short-beep.mp3' type='audio/mpeg' />
+					<source src='/sounds/short-beep.ogg' type='audio/ogg' />
+				</audio>
+				<audio ref={shortBeepRef3} preload='auto'>
+					<source src='/sounds/short-beep.mp3' type='audio/mpeg' />
+					<source src='/sounds/short-beep.ogg' type='audio/ogg' />
+				</audio>
+				<audio ref={shortBeepRef4} preload='auto'>
+					<source src='/sounds/short-beep.mp3' type='audio/mpeg' />
+					<source src='/sounds/short-beep.ogg' type='audio/ogg' />
 				</audio>
 				<audio ref={longBeepRef} preload='auto'>
 					<source src='/sounds/long-beep.mp3' type='audio/mpeg' />
+					<source src='/sounds/long-beep.ogg' type='audio/ogg' />
 				</audio>
 			</CardContent>
 		</Card>
