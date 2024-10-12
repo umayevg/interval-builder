@@ -198,10 +198,6 @@ export default function TimerConstructor() {
 						<TabsContent key={setIndex} value={`set-${setIndex}`}>
 							{!isRunning && !isReady && (
 								<>
-									<ExerciseList
-										exercises={sets[setIndex].exercises}
-										onRemove={removeExercise}
-									/>
 									<ExerciseForm
 										onAdd={addExercise}
 										title={
@@ -209,6 +205,10 @@ export default function TimerConstructor() {
 												? 'Add more exercises'
 												: 'Add'
 										}
+									/>
+									<ExerciseList
+										exercises={sets[setIndex].exercises}
+										onRemove={removeExercise}
 									/>
 									{sets[setIndex].exercises.length > 1 && (
 										<TotalRounds
