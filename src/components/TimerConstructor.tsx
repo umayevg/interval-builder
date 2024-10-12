@@ -188,10 +188,10 @@ export default function TimerConstructor() {
 					onValueChange={value => setActiveSet(Number(value.split('-')[1]))}
 				>
 					{!isRunning && !isReady && (
-						<TabsList className='grid w-full grid-cols-3 mb-4 bg-gray-700'>
-							<TabsTrigger value='set-0'>Preset 1</TabsTrigger>
-							<TabsTrigger value='set-1'>Preset 2</TabsTrigger>
-							<TabsTrigger value='set-2'>Preset 3</TabsTrigger>
+						<TabsList className='grid w-full grid-cols-3 mb-4 bg-slate-800'>
+							<TabsTrigger value='set-0'>Set 1</TabsTrigger>
+							<TabsTrigger value='set-1'>Set 2</TabsTrigger>
+							<TabsTrigger value='set-2'>Set 3</TabsTrigger>
 						</TabsList>
 					)}
 					{[0, 1, 2].map(setIndex => (

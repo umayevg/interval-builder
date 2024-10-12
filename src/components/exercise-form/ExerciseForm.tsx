@@ -68,7 +68,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 						value={newExercise.name}
 						onChange={e => updateNewExercise('name', e.target.value)}
 						placeholder='e.g., Push-ups'
-						className='bg-gray-800 border-gray-700 text-white placeholder-gray-500'
+						className='bg-gray-800 border-gray-700 text-white placeholder-gray-500 text-base'
 					/>
 				</div>
 				<div>

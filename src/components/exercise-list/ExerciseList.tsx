@@ -1,8 +1,9 @@
 import { Card, CardContent } from '../ui/card/Card'
 // import { Button } from '../ui/button/Button'
-import { Timer, Trash2 } from 'lucide-react'
+import { Timer } from 'lucide-react'
 import { Exercise } from '../../types/types'
 import { formatTime } from '../../lib/utils'
+import { Cross1Icon } from '@radix-ui/react-icons'
 
 interface ExerciseListProps {
 	exercises: Exercise[]
@@ -20,8 +21,11 @@ export default function ExerciseList({
 			<h3 className='text-lg font-semibold text-gray-300'>Exercises</h3>
 			<div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
 				{exercises.map((exercise, index) => (
-					<Card key={index} className='bg-gray-800 border-gray-700'>
-						<CardContent className='p-4'>
+					<Card
+						key={index}
+						className='bg-gray-800 transition-all duration-150 hover:border-blue-800 border-transparent'
+					>
+						<CardContent className='p-4 pt-2 pb-2'>
 							<div className='flex justify-between items-center mb-2'>
 								<h4 className='font-medium text-lg text-white ellipsis-custom'>
 									{exercise.name}{' '}
@@ -38,15 +42,20 @@ export default function ExerciseList({
 									>
 										<Trash2 className='h-4 w-4' />
 									</Button> */}
-									<Trash2
-										className='h-4 w-4 hover:text-red-300 cursor-pointer'
+									<Cross1Icon
+										className='h-4 w-4 hover:text-red-500 duration-200 cursor-pointer'
 										onClick={() => onRemove(index)}
 									/>
 								</span>
 							</div>
-							<div className='flex justify-between items-end text-sm text-gray-400'>
-								<div className='flex items-center'>
-									<Timer className='w-4 h-4 mr-1 inline-block' />
+							<div className='flex justify-between text-sm text-gray-600 '>
+								<div className='flex justify-between items-center'>
+									<span>
+										W: {exercise.workTime} | R: {exercise.restTime}
+									</span>
+								</div>
+								<div>
+									<Timer className='w-4 h-4 mr-1 inline-block mb-1' />
 									<span>
 										{formatTime(exercise.workTime + exercise.restTime)}
 									</span>
