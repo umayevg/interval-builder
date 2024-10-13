@@ -75,7 +75,7 @@ export default function LanguageSwitcher() {
 	return (
 		<Popover.Root>
 			<Popover.Trigger asChild>
-				<button className='flex items-center gap- px-4 py-2 rounded-full shadow-md hover:bg-slate-800 transition-colors border border-slate-700'>
+				<button className='flex items-center gap- px-4 py-2 rounded-2xl shadow-md hover:bg-slate-800 transition-colors border border-slate-700'>
 					<FlagIcon country={selectedLanguage.flag} size={24} />
 					<span>{selectedLanguage.label}</span>
 				</button>
