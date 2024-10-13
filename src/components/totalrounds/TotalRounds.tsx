@@ -16,7 +16,7 @@ export default function TotalRounds({
 	return (
 		<div className='mb-6'>
 			<Label htmlFor='totalRounds' className='text-gray-300 block mb-2'>
-				{t('labels.totalRounds')}:
+				{t('labels.totalRounds')}
 			</Label>
 			<div className='flex items-center space-x-2'>
 				<Button

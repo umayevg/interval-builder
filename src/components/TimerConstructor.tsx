@@ -178,6 +178,13 @@ export default function TimerConstructor() {
 		setReadyCountdown(5)
 	}
 
+	const getBackgroundColor = () => {
+		// if (isReady) return 'bg-white text-black'
+		if (isReady) return 'bg-yellow-500'
+		if (isResting) return 'bg-blue-600'
+		return 'bg-green-600'
+	}
+
 	return (
 		<Card className='w-full max-w-3xl mx-auto bg-gray-900 text-white'>
 			<CardHeader className='border-b border-gray-800'>
@@ -190,7 +197,11 @@ export default function TimerConstructor() {
 					</span>
 				</div>
 			</CardHeader>
-			<CardContent className='p-6'>
+			<CardContent
+				className={`p-6 ${(isRunning || isReady) && getBackgroundColor()}
+				${(isRunning || isReady) && 'transition-all duration-500 ease-in-out'}	
+				`}
+			>
 				<Tabs
 					value={`set-${activeSet}`}
 					onValueChange={value => setActiveSet(Number(value.split('-')[1]))}

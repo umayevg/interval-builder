@@ -33,11 +33,11 @@ export default function ExerciseList({
 							<div className='flex justify-between items-center mb-2'>
 								<h4 className='font-medium text-lg text-white ellipsis-custom'>
 									{exercise.name}{' '}
-									<span className='text-gray-500 text-sm'>
+									<span className='text-gray-600 text-sm'>
 										(x{exercise.rounds})
 									</span>
 								</h4>
-								<span className='text-sm text-gray-300'>
+								<span className='text-sm text-gray-100'>
 									{/* <Button
 										variant='destructive'
 										className='p-0 w-8 h-8 bg-red-700 hover:bg-red-900'
@@ -46,10 +46,13 @@ export default function ExerciseList({
 									>
 										<Trash2 className='h-4 w-4' />
 									</Button> */}
-									<Cross1Icon
-										className='h-4 w-4 hover:text-red-500 duration-200 cursor-pointer'
+
+									<div
 										onClick={() => onRemove(index)}
-									/>
+										className='hover:rounded-full p-1 cursor-pointer  duration-200 hover:bg-slate-700 opacity-40 hover:text-red-400'
+									>
+										<Cross1Icon className='' />
+									</div>
 								</span>
 							</div>
 							<div className='flex justify-between text-sm text-gray-600 '>
