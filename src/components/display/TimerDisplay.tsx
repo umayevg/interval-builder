@@ -1,5 +1,6 @@
 import { Exercise } from '../../types/types'
 import { formatTime } from '../../lib/utils'
+import { useTranslation } from 'react-i18next'
 
 interface TimerDisplayProps {
 	isReady: boolean
@@ -22,6 +23,7 @@ export default function TimerDisplay({
 	totalRounds,
 	currentTime,
 }: TimerDisplayProps) {
+	const { t } = useTranslation()
 	const getBackgroundColor = () => {
 		if (isReady) return 'bg-white text-black'
 		if (isResting) return 'bg-blue-600'
@@ -54,7 +56,7 @@ export default function TimerDisplay({
 					</div>
 					<p className='text-8xl font-bold mb-4'>{formatTime(currentTime)}</p>
 					<p className='text-xl mt-8 opacity-80'>
-						Set {currentRound} of {totalRounds}
+						{t('labels.set')} {currentRound} of {totalRounds}
 					</p>
 				</>
 			)}

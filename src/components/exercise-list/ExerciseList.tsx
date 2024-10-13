@@ -4,6 +4,7 @@ import { Timer } from 'lucide-react'
 import { Exercise } from '../../types/types'
 import { formatTime } from '../../lib/utils'
 import { Cross1Icon } from '@radix-ui/react-icons'
+import { useTranslation } from 'react-i18next'
 
 interface ExerciseListProps {
 	exercises: Exercise[]
@@ -14,11 +15,14 @@ export default function ExerciseList({
 	exercises,
 	onRemove,
 }: ExerciseListProps) {
+	const { t } = useTranslation()
 	if (exercises.length === 0) return null
 
 	return (
 		<div className='space-y-4 mb-6'>
-			<h3 className='text-lg font-semibold text-gray-300'>Exercises</h3>
+			<h3 className='text-lg font-semibold text-gray-300'>
+				{t('labels.exercises')}
+			</h3>
 			<div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
 				{exercises.map((exercise, index) => (
 					<Card

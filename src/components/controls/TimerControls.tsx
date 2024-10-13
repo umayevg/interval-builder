@@ -159,6 +159,7 @@ import {
 	VolumeX,
 } from 'lucide-react'
 import { Exercise } from '../../types/types'
+import { useTranslation } from 'react-i18next'
 
 interface ControlsProps {
 	exercises: Exercise[]
@@ -187,6 +188,7 @@ export default function Controls({
 	onToggleSound,
 	onAudioInit,
 }: ControlsProps) {
+	const { t } = useTranslation()
 	return (
 		<div className='flex flex-wrap justify-center gap-2 mt-6'>
 			{exercises.length > 0 && (
@@ -200,13 +202,13 @@ export default function Controls({
 								}}
 								className='bg-green-600 hover:bg-green-700 text-white'
 							>
-								<Play className='mr-2 h-4 w-4' /> Start
+								<Play className='mr-2 h-4 w-4' /> {t('buttons.start')}
 							</Button>
 							<Button
 								onClick={onReset}
 								className='bg-orange-600 hover:bg-orange-700 text-white'
 							>
-								<RotateCcw className='mr-2 h-4 w-4' /> Reset
+								<RotateCcw className='mr-2 h-4 w-4' /> {t('buttons.reset')}
 							</Button>
 						</>
 					)}
@@ -221,13 +223,13 @@ export default function Controls({
 								) : (
 									<Pause className='mr-2 h-4 w-4' />
 								)}
-								{isPaused ? 'Resume' : 'Pause'}
+								{isPaused ? t('buttons.resume') : t('buttons.pause')}
 							</Button>
 							<Button
 								onClick={onStop}
 								className='bg-red-600 hover:bg-red-700 text-white'
 							>
-								<StopCircle className='mr-2 h-4 w-4' /> Stop
+								<StopCircle className='mr-2 h-4 w-4' /> {t('buttons.stop')}
 							</Button>
 						</>
 					)}

@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "Start",
+		"pause": "Pause",
+		"resume": "Resume",
+		"stop": "Stop",
+		"reset": "Reset"
+	},
+	"labels": {
+		"set": "Setup",
+		"exerciseName": "Exercise Name",
+		"addExercise": "Add Exercise",
+		"addMoreExercises": "Add More Exercises",
+		"rounds": "Rounds",
+		"workTime": "Work Duration",
+		"restTime": "Rest Duration",
+		"exercises": "Exercises",
+		"totalRounds": "Total Sets",
+		"totalTime": "Total Workout Time",
+		"skipLastRest": "Skip Final Rest"
+	}
+}

@@ -10,8 +10,11 @@ import Controls from './controls/TimerControls'
 import { Exercise, Set } from '../types/types'
 import { useTimer } from '../hooks/useTimer'
 import TotalRounds from './totalrounds/TotalRounds'
+import LanguageSwitcher from './languages/LanguageSwitcher'
+import { useTranslation } from 'react-i18next'
 
 export default function TimerConstructor() {
+	const { t } = useTranslation()
 	const [sets, setSets] = useState<Set[]>(() => {
 		const savedSets = localStorage.getItem('sets')
 		return savedSets
@@ -178,9 +181,14 @@ export default function TimerConstructor() {
 	return (
 		<Card className='w-full max-w-3xl mx-auto bg-gray-900 text-white'>
 			<CardHeader className='border-b border-gray-800'>
-				<CardTitle className='text-2xl font-bold text-gray-300'>
-					Interval Builder
-				</CardTitle>
+				<div className='flex items-center justify-between'>
+					<CardTitle className='text-2xl font-bold text-gray-300'>
+						Interval Builder
+					</CardTitle>
+					<span className=''>
+						<LanguageSwitcher />
+					</span>
+				</div>
 			</CardHeader>
 			<CardContent className='p-6'>
 				<Tabs
@@ -189,9 +197,9 @@ export default function TimerConstructor() {
 				>
 					{!isRunning && !isReady && (
 						<TabsList className='grid w-full grid-cols-3 mb-4 bg-slate-800'>
-							<TabsTrigger value='set-0'>Set 1</TabsTrigger>
-							<TabsTrigger value='set-1'>Set 2</TabsTrigger>
-							<TabsTrigger value='set-2'>Set 3</TabsTrigger>
+							<TabsTrigger value='set-0'>{t('labels.set')} 1</TabsTrigger>
+							<TabsTrigger value='set-1'>{t('labels.set')} 2</TabsTrigger>
+							<TabsTrigger value='set-2'>{t('labels.set')} 3</TabsTrigger>
 						</TabsList>
 					)}
 					{[0, 1, 2].map(setIndex => (
@@ -202,8 +210,8 @@ export default function TimerConstructor() {
 										onAdd={addExercise}
 										title={
 											sets[setIndex].exercises.length > 0
-												? 'Add more exercises'
-												: 'Add'
+												? t('labels.addMoreExercises')
+												: t('labels.addExercise')
 										}
 									/>
 									<ExerciseList

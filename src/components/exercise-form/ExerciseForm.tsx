@@ -5,6 +5,7 @@ import { Label } from '../ui/label/Label'
 import { Plus, Minus } from 'lucide-react'
 import { Exercise } from '../../types/types'
 import { formatTime } from '../../lib/utils'
+import { useTranslation } from 'react-i18next'
 
 interface ExerciseFormProps {
 	onAdd: (exercise: Exercise) => void
@@ -12,6 +13,7 @@ interface ExerciseFormProps {
 }
 
 export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
+	const { t } = useTranslation()
 	const [newExercise, setNewExercise] = useState<Exercise>({
 		name: '',
 		workTime: 30,
@@ -60,7 +62,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 			<div className='flex sm:flex-row gap-4'>
 				<div className='flex-1'>
 					<Label htmlFor='exerciseName' className='text-gray-300 mb-2 block'>
-						Exercise Name
+						{t('labels.exerciseName')}
 					</Label>
 					<Input
 						id='exerciseName'
@@ -73,7 +75,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 				</div>
 				<div>
 					<Label htmlFor='rounds' className='text-gray-300 mb-2 block'>
-						Rounds
+						{t('labels.rounds')}
 					</Label>
 					<div className='flex items-center'>
 						<Button
@@ -100,7 +102,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 			<div className='flex flex-col sm:flex-row gap-4'>
 				<div className='flex-1'>
 					<Label htmlFor='workTime' className='text-gray-300 block mb-2'>
-						Work Time
+						{t('labels.workTime')}
 					</Label>
 					<div className='flex items-center'>
 						<Button
@@ -125,7 +127,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 				</div>
 				<div className='flex-1'>
 					<Label htmlFor='restTime' className='text-gray-300 mb-2 block'>
-						Rest Time
+						{t('labels.restTime')}
 					</Label>
 					<div className='flex items-center'>
 						<Button

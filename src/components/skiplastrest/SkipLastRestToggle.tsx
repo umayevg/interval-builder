@@ -1,5 +1,6 @@
 import { Switch } from '../ui/switch/Switch'
 import { Label } from '../ui/label/Label'
+import { useTranslation } from 'react-i18next'
 
 interface SkipLastRestToggleProps {
 	checked: boolean
@@ -10,6 +11,7 @@ export default function SkipLastRestToggle({
 	checked,
 	onToggle,
 }: SkipLastRestToggleProps) {
+	const { t } = useTranslation()
 	return (
 		<div className='flex items-center space-x-2 mb-4'>
 			<Switch
@@ -19,7 +21,7 @@ export default function SkipLastRestToggle({
 				className='bg-gray-600 hover:bg-gray-700 transition-colors duration-200  text-red'
 			/>
 			<Label htmlFor='skip-last-rest' className='text-gray-300'>
-				Skip final rest
+				{t('labels.skipLastRest')}
 			</Label>
 		</div>
 	)

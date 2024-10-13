@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "Start",
+		"pause": "Pause",
+		"resume": "Fortsetzen",
+		"stop": "Stopp",
+		"reset": "Zurücksetzen"
+	},
+	"labels": {
+		"set": "Satz",
+		"exerciseName": "Übungsname",
+		"addExercise": "Übung hinzufügen",
+		"addMoreExercises": "Weitere Übungen hinzufügen",
+		"rounds": "Wiederholungen",
+		"workTime": "Übungsdauer",
+		"restTime": "Pausendauer",
+		"exercises": "Übungen",
+		"totalRounds": "Gesamte Sätze",
+		"totalTime": "Gesamte Trainingszeit",
+		"skipLastRest": "Letzte Pause überspringen"
+	}
+}

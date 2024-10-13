@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "開始",
+		"pause": "一時停止",
+		"resume": "再開",
+		"stop": "停止",
+		"reset": "リセット"
+	},
+	"labels": {
+		"set": "セット",
+		"exerciseName": "エクササイズ名",
+		"addExercise": "エクササイズを追加",
+		"addMoreExercises": "さらにエクササイズを追加",
+		"rounds": "繰り返し回数",
+		"workTime": "運動時間",
+		"restTime": "休憩時間",
+		"exercises": "エクササイズ",
+		"totalRounds": "合計セット数",
+		"totalTime": "総トレーニング時間",
+		"skipLastRest": "最後の休憩をスキップ"
+	}
+}

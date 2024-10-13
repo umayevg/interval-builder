@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "开始",
+		"pause": "暂停",
+		"resume": "继续",
+		"stop": "停止",
+		"reset": "重置"
+	},
+	"labels": {
+		"set": "组",
+		"exerciseName": "运动名称",
+		"addExercise": "添加运动",
+		"addMoreExercises": "添加更多运动",
+		"rounds": "重复次数",
+		"workTime": "运动时间",
+		"restTime": "休息时间",
+		"exercises": "运动项目",
+		"totalRounds": "总组数",
+		"totalTime": "总运动时间",
+		"skipLastRest": "跳过最后休息"
+	}
+}

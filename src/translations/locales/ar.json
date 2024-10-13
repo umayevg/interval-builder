@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "بدء",
+		"pause": "إيقاف مؤقت",
+		"resume": "استئناف",
+		"stop": "إيقاف",
+		"reset": "إعادة ضبط"
+	},
+	"labels": {
+		"set": "مجموعة",
+		"exerciseName": "اسم التمرين",
+		"addExercise": "إضافة تمرين",
+		"addMoreExercises": "إضافة المزيد من التمارين",
+		"rounds": "التكرارات",
+		"workTime": "مدة التمرين",
+		"restTime": "مدة الراحة",
+		"exercises": "التمارين",
+		"totalRounds": "إجمالي المجموعات",
+		"totalTime": "الوقت الإجمالي للتمرين",
+		"skipLastRest": "تخطي الراحة الأخيرة"
+	}
+}

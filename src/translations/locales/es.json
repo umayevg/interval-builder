@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "Iniciar",
+		"pause": "Pausar",
+		"resume": "Reanudar",
+		"stop": "Detener",
+		"reset": "Reiniciar"
+	},
+	"labels": {
+		"set": "Serie",
+		"exerciseName": "Nombre del Ejercicio",
+		"addExercise": "Añadir Ejercicio",
+		"addMoreExercises": "Añadir Más Ejercicios",
+		"rounds": "Repeticiones",
+		"workTime": "Duración del Ejercicio",
+		"restTime": "Duración del Descanso",
+		"exercises": "Ejercicios",
+		"totalRounds": "Total de Series",
+		"totalTime": "Tiempo Total de Entrenamiento",
+		"skipLastRest": "Omitir Último Descanso"
+	}
+}

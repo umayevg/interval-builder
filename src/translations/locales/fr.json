@@ -1,0 +1,22 @@
+{
+	"buttons": {
+		"start": "Démarrer",
+		"pause": "Pause",
+		"resume": "Reprendre",
+		"stop": "Arrêter",
+		"reset": "Réinitialiser"
+	},
+	"labels": {
+		"set": "Série",
+		"exerciseName": "Nom de l'exercice",
+		"addExercise": "Ajouter un exercice",
+		"addMoreExercises": "Ajouter plus d'exercices",
+		"rounds": "Répétitions",
+		"workTime": "Durée de l'exercice",
+		"restTime": "Durée de repos",
+		"exercises": "Exercices",
+		"totalRounds": "Total des séries",
+		"totalTime": "Temps total",
+		"skipLastRest": "Sauter le dernier repos"
+	}
+}

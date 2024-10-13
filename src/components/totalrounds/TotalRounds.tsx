@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Button } from '../ui/button/Button'
 import { Label } from '../ui/label/Label'
 import { ChevronUp, ChevronDown } from 'lucide-react'
@@ -11,10 +12,11 @@ export default function TotalRounds({
 	totalRounds,
 	onUpdate,
 }: TotalRoundsProps) {
+	const { t } = useTranslation()
 	return (
 		<div className='mb-6'>
 			<Label htmlFor='totalRounds' className='text-gray-300 block mb-2'>
-				Total Rounds:
+				{t('labels.totalRounds')}:
 			</Label>
 			<div className='flex items-center space-x-2'>
 				<Button
