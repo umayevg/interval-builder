@@ -27,7 +27,7 @@ export default function ExerciseList({
 				{exercises.map((exercise, index) => (
 					<Card
 						key={index}
-						className='bg-gray-800 transition-all duration-150 hover:border-blue-800 border-transparent'
+						className='bg-gray-800 duration-150 hover:border-blue-800 border-transparent'
 					>
 						<CardContent className='p-4 pt-2 pb-2'>
 							<div className='flex justify-between items-center mb-2'>

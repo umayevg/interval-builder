@@ -14,8 +14,10 @@
 		"rounds": "التكرارات",
 		"workTime": "مدة التمرين",
 		"restTime": "مدة الراحة",
+		"resting": "راحة",
 		"exercises": "التمارين",
 		"totalRounds": "إجمالي المجموعات",
+		"totalRound": "جولة",
 		"totalTime": "الوقت الإجمالي للتمرين",
 		"skipLastRest": "تخطي الراحة الأخيرة"
 	}

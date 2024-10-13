@@ -8,15 +8,17 @@
 	},
 	"labels": {
 		"set": "Série",
-		"exerciseName": "Nome do Exercício",
-		"addExercise": "Adicionar Exercício",
-		"addMoreExercises": "Adicionar Mais Exercícios",
+		"exerciseName": "Nome",
+		"addExercise": "Adicionar",
+		"addMoreExercises": "Adicionar Mais",
 		"rounds": "Repetições",
-		"workTime": "Duração do Exercício",
-		"restTime": "Duração do Descanso",
+		"workTime": "Duração",
+		"restTime": "Descanso",
+		"resting": "Descanso",
 		"exercises": "Exercícios",
 		"totalRounds": "Total de Séries",
-		"totalTime": "Tempo Total de Treino",
+		"totalRound": "Rodada",
+		"totalTime": "Tempo Total",
 		"skipLastRest": "Pular Último Descanso"
 	}
 }

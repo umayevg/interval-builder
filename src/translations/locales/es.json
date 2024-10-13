@@ -14,8 +14,10 @@
 		"rounds": "Repeticiones",
 		"workTime": "Duración del Ejercicio",
 		"restTime": "Duración del Descanso",
+		"resting": "Descanso",
 		"exercises": "Ejercicios",
 		"totalRounds": "Total de Series",
+		"totalRound": "Ronda",
 		"totalTime": "Tiempo Total de Entrenamiento",
 		"skipLastRest": "Omitir Último Descanso"
 	}

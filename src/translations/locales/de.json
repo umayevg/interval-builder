@@ -14,8 +14,10 @@
 		"rounds": "Wiederholungen",
 		"workTime": "Übungsdauer",
 		"restTime": "Pausendauer",
+		"resting": "Pause",
 		"exercises": "Übungen",
 		"totalRounds": "Gesamte Sätze",
+		"totalRound": "Runde",
 		"totalTime": "Gesamte Trainingszeit",
 		"skipLastRest": "Letzte Pause überspringen"
 	}

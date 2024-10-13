@@ -25,14 +25,15 @@ export default function TimerDisplay({
 }: TimerDisplayProps) {
 	const { t } = useTranslation()
 	const getBackgroundColor = () => {
-		if (isReady) return 'bg-white text-black'
+		// if (isReady) return 'bg-white text-black'
+		if (isReady) return 'bg-yellow-500'
 		if (isResting) return 'bg-blue-600'
 		return 'bg-green-600'
 	}
 
 	return (
 		<div
-			className={`text-center p-8 rounded-lg transition-colors duration-300 ${getBackgroundColor()} 
+			className={`text-center p-8 rounded-lg transition-colors duration-300 ease-in-out ${getBackgroundColor()} 
       min-h-[400px] flex flex-col ${
 				isReady ? 'justify-center' : 'justify-between'
 			}`}
@@ -48,15 +49,20 @@ export default function TimerDisplay({
 				<>
 					<div>
 						<h2 className='text-3xl font-medium mb-2 opacity-80'>
-							{isResting ? 'Rest' : currentExercise?.name}
+							{isResting ? t('labels.resting') : currentExercise?.name}
 						</h2>
-						<p className='text-md mb-4 opacity-60'>
+						<p className='text-md mb- opacity-60'>
 							({currentExerciseRound}/{currentExercise?.rounds})
 						</p>
 					</div>
 					<p className='text-8xl font-bold mb-4'>{formatTime(currentTime)}</p>
 					<p className='text-xl mt-8 opacity-80'>
-						{t('labels.set')} {currentRound} of {totalRounds}
+						{totalRounds > 1 ? (
+							t('labels.totalRound') + ' ' + currentRound + '/' + totalRounds
+						) : (
+							<span>&nbsp;</span>
+						)}
+						{/* {t('labels.totalRound')} {currentRound} of {totalRounds} */}
 					</p>
 				</>
 			)}

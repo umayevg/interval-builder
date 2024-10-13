@@ -14,8 +14,10 @@
 		"rounds": "重复次数",
 		"workTime": "运动时间",
 		"restTime": "休息时间",
+		"resting": "休息",
 		"exercises": "运动项目",
 		"totalRounds": "总组数",
+		"totalRound": "回合",
 		"totalTime": "总运动时间",
 		"skipLastRest": "跳过最后休息"
 	}

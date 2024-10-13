@@ -8,14 +8,16 @@
 	},
 	"labels": {
 		"set": "Тренировка",
-		"exerciseName": "Название упражнения",
+		"exerciseName": "Название",
 		"addExercise": "Добавить упражнение",
-		"addMoreExercises": "Добавить ещё упражнения",
+		"addMoreExercises": "Добавить ещё",
 		"rounds": "Повторить",
-		"workTime": "Длительность работы",
-		"restTime": "Длительность отдыха",
+		"workTime": "Длительность",
+		"restTime": "Отдых",
+		"resting": "Отдых",
 		"exercises": "Упражнения",
-		"totalRounds": "Всего кругов",
+		"totalRounds": "Кругов",
+		"totalRound": "Круг",
 		"totalTime": "Общее время",
 		"skipLastRest": "Пропустить последний отдых"
 	}

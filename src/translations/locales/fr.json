@@ -9,14 +9,16 @@
 	"labels": {
 		"set": "Série",
 		"exerciseName": "Nom de l'exercice",
-		"addExercise": "Ajouter un exercice",
-		"addMoreExercises": "Ajouter plus d'exercices",
+		"addExercise": "Ajouter",
+		"addMoreExercises": "Ajouter encore",
 		"rounds": "Répétitions",
-		"workTime": "Durée de l'exercice",
-		"restTime": "Durée de repos",
+		"workTime": "Durée",
+		"restTime": "Repos",
+		"resting": "Repos",
 		"exercises": "Exercices",
-		"totalRounds": "Total des séries",
+		"totalRounds": "Tours",
+		"totalRound": "Tour",
 		"totalTime": "Temps total",
-		"skipLastRest": "Sauter le dernier repos"
+		"skipLastRest": "Sauter dernier repos"
 	}
 }

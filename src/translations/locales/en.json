@@ -8,15 +8,17 @@
 	},
 	"labels": {
 		"set": "Setup",
-		"exerciseName": "Exercise Name",
-		"addExercise": "Add Exercise",
-		"addMoreExercises": "Add More Exercises",
-		"rounds": "Rounds",
-		"workTime": "Work Duration",
-		"restTime": "Rest Duration",
+		"exerciseName": "Name",
+		"addExercise": "Add",
+		"addMoreExercises": "Add more",
+		"rounds": "Repeat",
+		"workTime": "Duration",
+		"restTime": "Rest",
+		"resting": "Rest",
 		"exercises": "Exercises",
-		"totalRounds": "Total Sets",
-		"totalTime": "Total Workout Time",
-		"skipLastRest": "Skip Final Rest"
+		"totalRounds": "Sets",
+		"totalRound": "Round",
+		"totalTime": "Total time",
+		"skipLastRest": "Skip final rest"
 	}
 }
