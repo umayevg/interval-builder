@@ -2,7 +2,7 @@
 
 ## Overview
 
-**Sport Timer** is a customizable interval timer designed for fitness enthusiasts. It allows users to create exercise sets, manage rounds, and get sound alerts during workouts.
+**Interval Builder** is a customizable interval timer designed for fitness enthusiasts. It allows users to create exercise sets, manage rounds, and get sound alerts during workouts.
 
 ## Features
 
