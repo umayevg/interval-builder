@@ -59,7 +59,7 @@ export default function ExerciseForm({ onAdd, title }: ExerciseFormProps) {
 
 	return (
 		<form onSubmit={handleSubmit} className='space-y-4 mb-6 mt-12'>
-			<div className='flex sm:flex-row gap-4'>
+			<div className='flex sm:flex-row gap-2'>
 				<div className='flex-1'>
 					<Label htmlFor='exerciseName' className='text-gray-300 mb-2 block'>
 						{t('labels.exerciseName')}

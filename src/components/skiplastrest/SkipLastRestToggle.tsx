@@ -13,16 +13,16 @@ export default function SkipLastRestToggle({
 }: SkipLastRestToggleProps) {
 	const { t } = useTranslation()
 	return (
-		<div className='flex items-center space-x-2 mb-4'>
+		<div className='flex flex-col items-center space-x-2 mb-4'>
+			<Label htmlFor='skip-last-rest' className='text-gray-300 mt-2 mb-4'>
+				{t('labels.skipLastRest')}
+			</Label>
 			<Switch
 				id='skip-last-rest'
 				checked={checked}
 				onCheckedChange={onToggle}
 				className='bg-gray-600 hover:bg-gray-700 transition-colors duration-200  text-red'
 			/>
-			<Label htmlFor='skip-last-rest' className='text-gray-300'>
-				{t('labels.skipLastRest')}
-			</Label>
 		</div>
 	)
 }

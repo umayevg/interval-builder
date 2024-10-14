@@ -7,7 +7,7 @@
 		"reset": "Réinitialiser"
 	},
 	"labels": {
-		"set": "Série",
+		"set": "Config",
 		"exerciseName": "Nom de l'exercice",
 		"addExercise": "Ajouter",
 		"addMoreExercises": "Ajouter encore",
