@@ -1,0 +1,24 @@
+{
+	"buttons": {
+		"start": "Başlat",
+		"pause": "Duraklat",
+		"resume": "Devam Et",
+		"stop": "Durdur",
+		"reset": "Sıfırla"
+	},
+	"labels": {
+		"set": "Antrenman",
+		"exerciseName": "Adı",
+		"addExercise": "Ekle",
+		"addMoreExercises": "Daha Fazla Ekle",
+		"rounds": "Tekrar",
+		"workTime": "Çalışma Süresi",
+		"restTime": "Dinlenme Süresi",
+		"resting": "Dinleniyoruz",
+		"exercises": "Egzersizler",
+		"totalRounds": "Toplam Tur",
+		"totalRound": "Tur",
+		"totalTime": "Toplam Süre",
+		"skipLastRest": "Son Dinlenmeyi Atla"
+	}
+}

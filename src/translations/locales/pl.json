@@ -1,0 +1,24 @@
+{
+	"buttons": {
+		"start": "Start",
+		"pause": "Pauza",
+		"resume": "Wznów",
+		"stop": "Stop",
+		"reset": "Resetuj"
+	},
+	"labels": {
+		"set": "Trening",
+		"exerciseName": "Nazwa",
+		"addExercise": "Dodaj",
+		"addMoreExercises": "Dodaj więcej",
+		"rounds": "Powtórzenia",
+		"workTime": "Czas pracy",
+		"restTime": "Czas odpoczynku",
+		"resting": "Odpoczynek",
+		"exercises": "Ćwiczenia",
+		"totalRounds": "Łączna liczba rund",
+		"totalRound": "Runda",
+		"totalTime": "Całkowity czas",
+		"skipLastRest": "Pomiń ostatni odpoczynek"
+	}
+}

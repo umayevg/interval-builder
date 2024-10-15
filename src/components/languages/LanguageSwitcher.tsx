@@ -33,6 +33,8 @@ const languages: LanguageOption[] = [
 	{ code: 'cn', label: '', flag: 'CN' },
 	{ code: 'jp', label: '', flag: 'JP' },
 	{ code: 'ar', label: '', flag: 'SA' },
+	{ code: 'tr', label: '', flag: 'TR' },
+	{ code: 'pl', label: '', flag: 'PL' },
 ]
 
 const LOCAL_STORAGE_KEY = 'selectedLanguage'
